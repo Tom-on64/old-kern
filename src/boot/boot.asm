@@ -1,37 +1,81 @@
 [org 0x7c00]
 [bits 16]
+[global _start]
 
-start:
+_start:
     ; Set up the stack
+    xor ax, ax
+    mov es, ax
+    mov ds, ax
     mov bp, 0x8000
     mov sp, bp
 
-    mov bx, msg
-    call puts
+    ; Text mode (clears screen)
+    mov ah, 0
+    mov al, 3
+    int 0x10
 
-halt:
+    ; Load kernel to KERNEL_LOC
+    mov bx, KERNEL_LOC
+    mov ah, 2   ; Read from disk
+    mov al, 20  ; Read 20 sectors (! If code is more than 10kB it won't be fully loaded !)
+    mov ch, 0   ; Cylinder number
+    mov cl, 2   ; Sector to start at
+    mov dh, 0   ; Head number
+    int 0x13    ; Read interupt
+
+    cli
+    lgdt [GDT_Descriptor]
+    ; Change last bit of cr0 to 1
+    mov eax, cr0
+    or eax, 1
+    mov cr0, eax
+    ; Far jump to code
+    jmp CODE_SEG:protected_start
     jmp $
 
-;
-; Prints a string to the screen
-; Args:
-;   bx - String pointer
-;
-puts:
-    push ax
-    mov ah, 0x0e
-.loop: 
-    mov al, [bx]
-    or al, al
-    jz .done
-    int 0x10
-    inc bx
-    jmp .loop
-.done: 
-    pop ax
-    ret
+[bits 32]
+protected_start:
+    mov ax, DATA_SEG    ; Setup segment registers and stack
+    mov ds, ax
+    mov ss, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    mov ebp, 0x90000
+    mov esp, ebp
 
-msg: db "Hello, World!", 0
+    jmp KERNEL_LOC
+    jmp $
+
+; Global Descriptor Table
+GDT_Start:
+    null_descriptor:
+        dd 0 ; four null bytes
+        dd 0 ; four null bytes
+    code_descriptor:
+        dw 0xffff ; First bits of limit
+        dw 0 ; 16 bits +
+        db 0 ; + 8 bits = 24 bits
+        db 0b10011010 ; p, p, t, type flags
+        db 0b11001111 ; Other flags + limit (last 4 bits)
+        db 0 ; base (last 8 bits)
+    data_descriptor:
+        dw 0xffff ; First bits of limit
+        dw 0 ; 16 bits +
+        db 0 ; + 8 bits = 24 bits
+        db 0b10010010 ; p, p, t, type flags
+        db 0b11001111 ; Other flags + limit (last 4 bits)
+        db 0 ; base (last 8 bits)
+GDT_End:
+
+GDT_Descriptor:
+    dw GDT_End - GDT_Start - 1  ; Size
+    dd GDT_Start    
+
+CODE_SEG equ code_descriptor - GDT_Start
+DATA_SEG equ data_descriptor - GDT_Start
+KERNEL_LOC equ 0x1000
 
 times 510 - ($ - $$) db 0
 db 0x55, 0xaa
