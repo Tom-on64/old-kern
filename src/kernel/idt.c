@@ -1,6 +1,41 @@
 #include "stdint.h"
 #include "idt.h"
 
+const char *exceptionMessages[] = {
+    "Divide Error",
+    "Debug Exception",
+    "NMI Interrupt",
+    "Breakpoint",
+    "Overflow",
+    "BOUND Range Exceeded",
+    "Invalid Opcode",
+    "Device Not Available",
+    "Double Fault",
+    "Coprocessor Segment Overrun",
+    "Invalid TSS",
+    "Segment Not Present",
+    "Stack-Segment Fault",
+    "General Protection Fault",
+    "Page Fault",
+    "Reserved",
+    "x87 FPU Floating-Point Error",
+    "Alignment Check",
+    "Machine Check",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+};
+
 void exceptionHandler(uint32_t errorCode)
 {
     if (errorCode < sizeof(exceptionMessages) / sizeof(exceptionMessages[0]))
@@ -14,7 +49,7 @@ void exceptionHandler(uint32_t errorCode)
         // Output the default error message
     }
 
-    asm volatile("jmp $");
+    while (1) {}
 }
 
 // Very repetative exception handlers
