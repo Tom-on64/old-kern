@@ -1,5 +1,6 @@
 #include "stdint.h"
 #include "idt.h"
+#include "output.h"
 
 const char *exceptionMessages[] = {
     "Divide Error",
@@ -41,12 +42,12 @@ void exceptionHandler(uint32_t errorCode)
     if (errorCode < sizeof(exceptionMessages) / sizeof(exceptionMessages[0]))
     {
         const char *message = exceptionMessages[errorCode];
-        // Output the error message to the screen or wherever you prefer
+        puts(message);
     }
     else
     {
         const char *message = "Unknown Exception";
-        // Output the default error message
+        puts(message);
     }
 
     while (1) {}
