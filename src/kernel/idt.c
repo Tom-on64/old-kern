@@ -51,6 +51,9 @@ void exc29() { exceptionHandler(29); }
 void exc30() { exceptionHandler(30); }
 void exc31() { exceptionHandler(31); }
 
+// IDT array with 256 entries (adjust for the number of interrupts)
+struct IDTEntry idt[256];
+
 void addEntry(uint8_t index, uint32_t offset, uint16_t selector, uint8_t type_attr)
 {
     idt[index].offset_low = (uint16_t)offset;

@@ -2,9 +2,6 @@
 #define IDT_H
 #include "stdint.h"
 
-// IDT array with 256 entries (adjust for the number of interrupts)
-struct IDTEntry idt[256];
-
 // Structure of an IDT entry
 struct IDTEntry
 {
