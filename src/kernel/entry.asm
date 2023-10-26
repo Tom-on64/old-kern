@@ -4,5 +4,5 @@
 
 _start:
     call main
-
-jmp $
+    
+    jmp $    

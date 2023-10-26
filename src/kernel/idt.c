@@ -3,7 +3,7 @@
 #include "output.h"
 
 const char *exceptionMessages[] = {
-    "Divide Error",
+    "Divide By Zero Error",
     "Debug Exception",
     "NMI Interrupt",
     "Breakpoint",
@@ -42,15 +42,15 @@ void exceptionHandler(uint32_t errorCode)
     if (errorCode < sizeof(exceptionMessages) / sizeof(exceptionMessages[0]))
     {
         const char *message = exceptionMessages[errorCode];
-        puts(message);
+        puts(message, 0b00000100);
     }
     else
     {
         const char *message = "Unknown Exception";
-        puts(message);
+        puts(message, 0b00000100);
     }
 
-    while (1) {}
+    // while (1) {}
 }
 
 // Very repetative exception handlers
@@ -134,6 +134,7 @@ void setupIdt()
     addEntry(29, (uint32_t)&exc29, 0x08, 0x8E);
     addEntry(30, (uint32_t)&exc30, 0x08, 0x8E);
     addEntry(31, (uint32_t)&exc31, 0x08, 0x8E);
+
 
     // Load the IDT using the lidt instruction
     uint16_t idt_size = sizeof(idt) - 1;

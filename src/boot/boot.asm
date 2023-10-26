@@ -36,17 +36,22 @@ _start:
 
 [bits 32]
 protected_start:
-    mov ax, DATA_SEG    ; Setup segment registers and stack
+    ; Set up data and stack segments
+    mov ax, DATA_SEG
     mov ds, ax
     mov ss, ax
     mov es, ax
     mov fs, ax
     mov gs, ax
+
+    ; Set up the stack pointer in protected mode
     mov ebp, 0x90000
     mov esp, ebp
 
+    ; Perform the far jump
     jmp KERNEL_LOC
     jmp $
+
 
 ; Global Descriptor Table
 GDT_Start:
