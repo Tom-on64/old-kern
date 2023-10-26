@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "*.v": "diff",
+        "*.ne": "neon",
+        "*.nex": "json",
+        "*.json": "jsonc",
+        "*.data": "jsonc",
+        "*.syn": "ebnf",
+        "idt.h": "c",
+        "output.h": "c"
+    }
+}

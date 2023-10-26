@@ -3,8 +3,7 @@
 #include "stdint.h"
 
 // Structure of an IDT entry
-struct IDTEntry
-{
+struct IDTEntry {
     uint16_t offset_low;  // Low 16 bits of the offset
     uint16_t selector;    // 16 bit Selector
     uint8_t zero;         // This is alwazs a NULL byte

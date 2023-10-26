@@ -1,12 +1,8 @@
-#include "idt.h"
-#include "output.h"
-
-extern void main()
-{
-    setupVideo();
-    setupIdt();
-
-    puts("Hello, World!", 0b00100100);
-
-    return;
+void main() {
+    char* videoMem = (char*) 0xb8000;
+    *(videoMem + 0) = 'k';
+    *(videoMem + 2) = 'e';
+    *(videoMem + 4) = 'r';
+    *(videoMem + 6) = 'n';
+    *(videoMem + 8) = '.';
 }

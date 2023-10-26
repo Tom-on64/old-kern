@@ -2,7 +2,7 @@
 #include "idt.h"
 #include "output.h"
 
-const char *exceptionMessages[] = {
+const char* exceptionMessages[] = {
     "Divide By Zero Error",
     "Debug Exception",
     "NMI Interrupt",
@@ -37,20 +37,16 @@ const char *exceptionMessages[] = {
     "Reserved",
 };
 
-void exceptionHandler(uint32_t errorCode)
-{
-    if (errorCode < sizeof(exceptionMessages) / sizeof(exceptionMessages[0]))
-    {
-        const char *message = exceptionMessages[errorCode];
+void exceptionHandler(uint32_t errorCode) {
+    if (errorCode < sizeof(exceptionMessages) / sizeof(exceptionMessages[0])) {
+        const char* message = exceptionMessages[errorCode];
         puts(message, 0b00000100);
-    }
-    else
-    {
-        const char *message = "Unknown Exception";
+    } else {
+        const char* message = "Unknown Exception";
         puts(message, 0b00000100);
     }
 
-    // while (1) {}
+    while (1);
 }
 
 // Very repetative exception handlers
@@ -90,8 +86,7 @@ void exc31() { exceptionHandler(31); }
 // IDT array with 256 entries (adjust for the number of interrupts)
 struct IDTEntry idt[256];
 
-void addEntry(uint8_t index, uint32_t offset, uint16_t selector, uint8_t type_attr)
-{
+void addEntry(uint8_t index, uint32_t offset, uint16_t selector, uint8_t type_attr) {
     idt[index].offset_low = (uint16_t)offset;
     idt[index].selector = selector;
     idt[index].zero = 0;
@@ -99,8 +94,7 @@ void addEntry(uint8_t index, uint32_t offset, uint16_t selector, uint8_t type_at
     idt[index].offset_high = (uint16_t)(offset >> 16);
 }
 
-void setupIdt()
-{
+void setupIdt() {
     // 32 reserved interupts (Cannot use a for loop because of function names)
     addEntry(0, (uint32_t)&exc0, 0x08, 0x8E);
     addEntry(1, (uint32_t)&exc1, 0x08, 0x8E);
