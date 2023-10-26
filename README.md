@@ -4,8 +4,6 @@
 
 Idk why i called it that it was 3am and i needed sleep
 
-### Old version
-
 ## Color codes
 (The most significant bit is always 0)
 ### Foreground (text) Colors (lower 4 bits):

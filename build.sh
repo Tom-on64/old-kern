@@ -1,5 +1,7 @@
 #!/usr/local/bin/bash
 
+mkdir ./build/
+
 nasm -f bin ./src/boot/boot.asm -o ./build/boot.bin
 nasm -f elf32 ./src/kernel/entry.asm -o ./build/entry.o
 for file in ./src/kernel/*.c; do
