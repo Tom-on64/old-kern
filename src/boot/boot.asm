@@ -7,7 +7,7 @@ _start:
     xor ax, ax
     mov es, ax
     mov ds, ax
-    mov bp, 0x8000
+    mov bp, 0x9000
     mov sp, bp
 
     ; Text mode (clears screen)
@@ -31,15 +31,15 @@ _start:
     or eax, 1
     mov cr0, eax
     ; Far jump to code
-    jmp CODE_SEG:protected_start
+    call CODE_SEG:protected_start ; We never return
     jmp $
 
 [bits 32]
 protected_start:
     ; Set up data and stack segments
-    mov ax, DATA_SEG
-    mov ds, ax
-    mov ss, ax
+    mov ax, DATA_SEG 
+    mov ds, ax 
+    mov ss, ax 
     mov es, ax
     mov fs, ax
     mov gs, ax
@@ -51,7 +51,6 @@ protected_start:
     ; Perform the far jump
     jmp KERNEL_LOC
     jmp $
-
 
 ; Global Descriptor Table
 GDT_Start:

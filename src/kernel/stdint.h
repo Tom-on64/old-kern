@@ -1,6 +1,3 @@
-#ifndef STDINT_H
-#define STDINT_H
-
 // Signed fixed-size integer types
 typedef signed char int8_t;
 typedef short int16_t;
@@ -15,5 +12,3 @@ typedef unsigned long long uint64_t;
 
 // Define NULL
 #define NULL ((void *)0)
-
-#endif

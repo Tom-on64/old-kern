@@ -9,6 +9,9 @@
         "idt.h": "c",
         "output.h": "c",
         "stdint.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "screen.h": "c",
+        "lowend.h": "c",
+        "*.cp": "c"
     }
 }

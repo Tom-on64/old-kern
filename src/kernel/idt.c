@@ -1,8 +1,8 @@
 #include "stdint.h"
 #include "idt.h"
-#include "output.h"
+#include "screen.h"
 
-const char* exceptionMessages[] = {
+char* exceptionMessages[] = {
     "Divide By Zero Error",
     "Debug Exception",
     "NMI Interrupt",
@@ -37,19 +37,8 @@ const char* exceptionMessages[] = {
     "Reserved",
 };
 
-void exceptionHandler(uint32_t errorCode) {
-    if (errorCode < sizeof(exceptionMessages) / sizeof(exceptionMessages[0])) {
-        const char* message = exceptionMessages[errorCode];
-        puts(message, 0b00000100);
-    } else {
-        const char* message = "Unknown Exception";
-        puts(message, 0b00000100);
-    }
+struct idtEntry idt[256];
 
-    while (1);
-}
-
-// Very repetative exception handlers
 void exc0() { exceptionHandler(0); }
 void exc1() { exceptionHandler(1); }
 void exc2() { exceptionHandler(2); }
@@ -83,19 +72,25 @@ void exc29() { exceptionHandler(29); }
 void exc30() { exceptionHandler(30); }
 void exc31() { exceptionHandler(31); }
 
-// IDT array with 256 entries (adjust for the number of interrupts)
-struct IDTEntry idt[256];
-
-void addEntry(uint8_t index, uint32_t offset, uint16_t selector, uint8_t type_attr) {
-    idt[index].offset_low = (uint16_t)offset;
+void addEntry(uint8_t index, uint32_t offset, uint16_t selector, uint8_t typeAttr) {
+    idt[index].offsetLow = (uint16_t)offset;
     idt[index].selector = selector;
     idt[index].zero = 0;
-    idt[index].type_attr = type_attr;
-    idt[index].offset_high = (uint16_t)(offset >> 16);
+    idt[index].typeAttr = typeAttr;
+    idt[index].offsetHigh = (uint16_t)(offset >> 16);
+}
+
+void exceptionHandler(uint8_t errCode) {
+    char* message;
+    if (errCode < sizeof(exceptionMessages) / sizeof(exceptionMessages[0])) message = exceptionMessages[errCode];
+    else message = "Unknown Exception";
+    
+    print(message, 0x04);
+
+    // while (1); // halt
 }
 
 void setupIdt() {
-    // 32 reserved interupts (Cannot use a for loop because of function names)
     addEntry(0, (uint32_t)&exc0, 0x08, 0x8E);
     addEntry(1, (uint32_t)&exc1, 0x08, 0x8E);
     addEntry(2, (uint32_t)&exc2, 0x08, 0x8E);
@@ -129,12 +124,13 @@ void setupIdt() {
     addEntry(30, (uint32_t)&exc30, 0x08, 0x8E);
     addEntry(31, (uint32_t)&exc31, 0x08, 0x8E);
 
-
-    // Load the IDT using the lidt instruction
+    // Load IDT
     uint16_t idt_size = sizeof(idt) - 1;
     uint32_t idt_address = (uint32_t)&idt;
     asm volatile("lidt (%0)" ::"r"(&idt_size), "r"(idt_address));
 
     // Enable interrupts
     asm volatile("sti");
+
+    print("Setup IDT\n", 0x0a);
 }
