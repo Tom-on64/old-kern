@@ -12,6 +12,7 @@
         "stdio.h": "c",
         "screen.h": "c",
         "system.h": "c",
-        "*.cp": "c"
+        "*.cp": "c",
+        "keyboard.h": "c"
     }
 }

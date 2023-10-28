@@ -1,5 +1,6 @@
 #include "screen.h"
 #include "system.h"
+#include "stdbool.h"
 
 int getScreenOffset(int col, int row) {
     return (row * MAXCOLS + col) * 2;
@@ -50,8 +51,18 @@ void putc(char character, int col, int row, uint8_t attrByte) {
     if (character == '\n') {
         int rows = offset / (2 * MAXCOLS);
         offset = getScreenOffset(MAXCOLS - 1, rows);
-    }
-    else {
+    } else if (character == '\b') {
+        offset -= 2;
+        *(videomem + offset) = ' ';
+        *(videomem + offset + 1) = attrByte;
+        offset -= 2;
+    } else if (character == '\t') {
+        for (int i = 0; i < 3; i++) { // 4 Spaces
+            *(videomem + offset) = ' ';
+            *(videomem + offset + 1) = attrByte;
+            offset += 2;
+        }
+    } else {
         *(videomem + offset) = character;
         *(videomem + offset + 1) = attrByte;
     }
@@ -71,6 +82,10 @@ void print(char* string, uint8_t attrByte) {
     puts(string, -1, -1, attrByte);
 }
 
+void printc(char character, uint8_t attrByte) {
+    putc(character, -1, -1, attrByte);
+}
+
 void clear(uint8_t attrByte) {
     for (int row = 0; row < MAXROWS; row++) {
         for (int col = 0; col < MAXCOLS; col++) {
@@ -79,4 +94,12 @@ void clear(uint8_t attrByte) {
     }
 
     setCursor(getScreenOffset(0, 0));
+}
+
+void changeCursor(char cursor, uint8_t attrByte) {
+    uint8_t* videomem = (uint8_t*)VIDEOADDRESS;
+    int offset = getCursor();
+
+    *(videomem + offset) = cursor;
+    *(videomem + offset + 1) = attrByte;
 }
