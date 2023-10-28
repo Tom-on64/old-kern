@@ -1,6 +1,7 @@
 #include "idt.h"
 #include "isrs.h"
 #include "screen.h"
+#include "system.h"
 
 char* exceptionMessages[] = {
     "Divide By Zero Error",
@@ -75,7 +76,7 @@ void setupIsrs() {
 void faultHandler(struct regs *r) {
     if (r->intNo < 32) {
         print(exceptionMessages[r->intNo], 0x04);
-        print(" exception. System halted!", 0x04);
+        print(" Exception. System halted!", 0x04);
         while(1);
     }
 }

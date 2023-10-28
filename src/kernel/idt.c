@@ -1,7 +1,7 @@
 #include "idt.h"
 #include "stdint.h"
 #include "screen.h"
-#include "lowend.h"
+#include "system.h"
 
 struct idtEntry {
     uint16_t offsetLow;

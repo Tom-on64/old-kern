@@ -1,10 +1,3 @@
-struct regs {
-    unsigned int gs, fs, es, ds;
-    unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;
-    unsigned int intNo, errCode;
-    unsigned int eip, cs, eflags, useresp, ss;
-};
-
 void setupIsrs();
 
 extern void isr0();

@@ -1,5 +1,5 @@
 #include "screen.h"
-#include "lowend.h"
+#include "system.h"
 
 int getScreenOffset(int col, int row) {
     return (row * MAXCOLS + col) * 2;

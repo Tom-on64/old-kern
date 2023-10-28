@@ -3,6 +3,7 @@
 [extern main] ; Main from main.c
 [extern idtp] ; IDT Pointer from idt.c
 [extern faultHandler] ; Fault handler from isrs.c
+[extern irqHandler] ; Fault handler from isrs.c
 
 ; Calls main in main.c. If we return from main.c, halt
 [global _start]
@@ -10,7 +11,10 @@ _start:
     call main
     jmp $
 
+; --- IDT ---
+;
 ; ISRs
+;
 [global isr0]
 [global isr1]
 [global isr2]
@@ -222,6 +226,135 @@ isrCommon:
     add esp, 8
     iret
 
+;
+; IRQs
+;
+[global irq0]
+[global irq1]
+[global irq2]
+[global irq3]
+[global irq4]
+[global irq5]
+[global irq6]
+[global irq7]
+[global irq8]
+[global irq9]
+[global irq10]
+[global irq11]
+[global irq12]
+[global irq13]
+[global irq14]
+[global irq15]
+irq0: ; ISR32
+    cli
+    push byte 0
+    push byte 32
+    jmp irqCommon
+irq1: ; ISR33
+    cli
+    push byte 0
+    push byte 33
+    jmp irqCommon
+irq2: ; ISR34
+    cli
+    push byte 0
+    push byte 34
+    jmp irqCommon
+irq3: ; ISR35
+    cli
+    push byte 0
+    push byte 35
+    jmp irqCommon
+irq4: ; ISR36
+    cli
+    push byte 0
+    push byte 36
+    jmp irqCommon
+irq5: ; ISR37
+    cli
+    push byte 0
+    push byte 37
+    jmp irqCommon
+irq6: ; ISR38
+    cli
+    push byte 0
+    push byte 38
+    jmp irqCommon
+irq7: ; ISR39
+    cli
+    push byte 0
+    push byte 39
+    jmp irqCommon
+irq8: ; ISR40
+    cli
+    push byte 0
+    push byte 40
+    jmp irqCommon
+irq9: ; ISR41
+    cli
+    push byte 0
+    push byte 41
+    jmp irqCommon
+irq10: ; ISR42
+    cli
+    push byte 0
+    push byte 42
+    jmp irqCommon
+irq11: ; ISR43
+    cli
+    push byte 0
+    push byte 43
+    jmp irqCommon
+irq12: ; ISR44
+    cli
+    push byte 0
+    push byte 44
+    jmp irqCommon
+irq13: ; ISR45
+    cli
+    push byte 0
+    push byte 45
+    jmp irqCommon
+irq14: ; ISR46
+    cli
+    push byte 0
+    push byte 46
+    jmp irqCommon
+irq15: ; ISR47
+    cli
+    push byte 0
+    push byte 47
+    jmp irqCommon
+    cli
+    push byte 0
+    push byte 31
+    jmp irqCommon
+
+irqCommon:
+    pusha
+    push ds
+    push es
+    push fs
+    push gs
+    mov ax, 0x10
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    mov eax, esp
+    push eax
+    mov eax, irqHandler
+    call eax
+    pop eax
+    pop gs
+    pop fs
+    pop es
+    pop ds
+    popa
+    add esp, 8
+    iret
+
+;
 ; Loads the IDT
 [global idtLoad]
 idtLoad:

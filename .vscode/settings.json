@@ -11,7 +11,7 @@
         "stdint.h": "c",
         "stdio.h": "c",
         "screen.h": "c",
-        "lowend.h": "c",
+        "system.h": "c",
         "*.cp": "c"
     }
 }
