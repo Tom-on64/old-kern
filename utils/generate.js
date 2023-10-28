@@ -1,0 +1,1 @@
+for (let i = 0; i < 32; i++) console.log(`idtSetGate(${i}, (unsigned)isr${i}, 0x08, 0x8e);`);

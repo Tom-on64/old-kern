@@ -1,16 +1,12 @@
 #include "screen.h"
 #include "idt.h"
+#include "isrs.h"
 
 void main() {
     clear(0x00);
     print("kern.\n\n", 0x0f);
-    print("Booting...\n", 0x0f);
     setupIdt();
-    print("\nDone!\n", 0x0f);
+    setupIsrs();
 
-    int i = 99999999;
-    while (i != 0) i--;
-    print("\ntest", 0x0f);
-
-    return;
+    while(1);
 }

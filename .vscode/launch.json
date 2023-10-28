@@ -1,0 +1,16 @@
+{
+    "verison": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch QEMU", 
+            "type": "cppdbg", 
+            "request": "launch", 
+            "program": "${workspaceRoot}/build.sh", 
+            "cwd": "${workspaceRoot}", 
+            "miDebuggerPath": "", 
+            "miDebuggerServerAddress": "localhost:1234", 
+            "stopAtEntry": true, 
+            "preLaunchTask": "Run QEMU"
+        }
+    ]
+}
