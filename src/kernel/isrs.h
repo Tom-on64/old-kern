@@ -1,3 +1,6 @@
+#ifndef ISRS_H
+#define ISRS_H
+
 void setupIsrs();
 
 extern void isr0();
@@ -32,3 +35,5 @@ extern void isr28();
 extern void isr29();
 extern void isr30();
 extern void isr31();
+
+#endif

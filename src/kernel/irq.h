@@ -1,3 +1,9 @@
+#ifndef IRQ_H
+#define IRQ_H
+
+#include "stdint.h"
+#include "system.h"
+
 extern void irq0();
 extern void irq1();
 extern void irq2();
@@ -16,3 +22,8 @@ extern void irq14();
 extern void irq15();
 
 void setupIrqs();
+void installIrqHandler(uint32_t irq, void (*handler)(struct regs* r));
+void uninstallIrqHandler(uint32_t irq);
+void irqHandler(struct regs* r);
+
+#endif

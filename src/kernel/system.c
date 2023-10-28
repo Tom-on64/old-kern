@@ -19,7 +19,3 @@ char* memset(char* dst, uint8_t val, uint16_t amount) {
     for (int i = 0; i < amount; i++) *(dst + i) = val;
     return dst;
 }
-
-void sleep(uint32_t delay) {
-    while (delay != 0) delay--;
-}

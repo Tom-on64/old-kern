@@ -2,6 +2,7 @@
 #include "idt.h"
 #include "isrs.h"
 #include "irq.h"
+#include "timer.h"
 
 void main() {
     clear(0x00);
@@ -11,7 +12,7 @@ void main() {
     setupIrqs();
     asm volatile("sti");
 
-    print("Hello, World!", 0x0f);
+    setupTimer();
 
     while(1);
 }

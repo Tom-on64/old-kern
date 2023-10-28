@@ -1,3 +1,6 @@
+#ifndef SCREEN_H
+#define SCREEN_H
+
 #include "stdint.h"
 
 #define VIDEOADDRESS 0xb8000
@@ -15,3 +18,5 @@ void putc(char character, int col, int row, uint8_t attrByte);
 void puts(char* string, int col, int row, uint8_t attrByte);
 void print(char* string, uint8_t attrByte);
 void clear(uint8_t attrByte);
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef SYSTEM_H
+#define SYSTEM_H
+
 #include "stdint.h"
 
 uint8_t inb(uint16_t port);
@@ -11,3 +14,5 @@ struct regs {
     unsigned int intNo, errCode;
     unsigned int eip, cs, eflags, useresp, ss;
 };
+
+#endif
