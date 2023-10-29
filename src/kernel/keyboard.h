@@ -20,7 +20,7 @@
 #define MAX_BUFFER_SIZE 256
 
 void setupKeyboard();
-char* read(char terminator);
+char* read(char terminator, uint8_t attrByte);
 
 #endif 
 

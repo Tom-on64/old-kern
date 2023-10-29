@@ -13,6 +13,8 @@
         "screen.h": "c",
         "system.h": "c",
         "*.cp": "c",
-        "keyboard.h": "c"
+        "keyboard.h": "c",
+        "stdbool.h": "c",
+        "shell.h": "c"
     }
 }

@@ -33,3 +33,17 @@ Green text + Black bg
 Black - 0 | 000
 Green - 2 | 0010
 Code  - 2 | 0 000 0010
+
+## Header
+
+replace 'q' with '\xdb'
+
+```text
+q
+q
+q  q   qq   q qq   q qq
+q q   q  q  qq  q  qq  q
+qq    qqqq  q      q   q
+q q   q     q      q   q  
+q  q   qqq  q      q   q  q
+```

@@ -30,6 +30,7 @@ uint16_t bufferSize = 0;
 char buffer[MAX_BUFFER_SIZE + 1];
 char bufferTerminator;
 bool echo = false;
+uint8_t echoAttr = 0x0f;
 bool canBackspace = false;
 
 void keyboardHandler(struct regs* r) {
@@ -51,11 +52,11 @@ void keyboardHandler(struct regs* r) {
     if (scancode & 0x80) { // Key released
     } else if (character != 0) {
         if (!canBackspace && character == '\b') return;
-        if (echo) printc(character, 0x0f);
+        if (echo) printc(character, echoAttr);
         buffer[bufferSize] = character;
 
         if (character == '\b' && buffer[bufferSize - 1] == '\t') {
-            for (int i = 0; i < 3; i++) printc(character, 0x0f);
+            for (int i = 0; i < 3; i++) printc(character, echoAttr);
         }
 
         if (character == '\b') bufferSize--;
@@ -70,9 +71,10 @@ void setupKeyboard() {
     installIrqHandler(1, keyboardHandler);
 }
 
-char* read(char terminator) {
+char* read(char terminator, uint8_t attrByte) {
     bufferSize = 0;
     echo = true;
+    echoAttr = attrByte;
 
     while(buffer[bufferSize-1] != terminator && bufferSize < MAX_BUFFER_SIZE);
 
@@ -80,7 +82,7 @@ char* read(char terminator) {
     canBackspace = false;
     buffer[bufferSize] = '\0';
     if (bufferSize >= MAX_BUFFER_SIZE) {
-        printc('\n', 0x0f);
+        printc('\n', echoAttr);
         buffer[bufferSize] = '\n';
         buffer[bufferSize + 1] = '\0';
     }
