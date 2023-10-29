@@ -27,7 +27,7 @@ bool altPressed = false;
 bool ctrlPressed = false;
 
 uint16_t bufferSize = 0;
-char buffer[MAX_BUFFER_SIZE];
+char buffer[MAX_BUFFER_SIZE + 1];
 char bufferTerminator;
 bool echo = false;
 bool canBackspace = false;
@@ -53,8 +53,14 @@ void keyboardHandler(struct regs* r) {
         if (!canBackspace && character == '\b') return;
         if (echo) printc(character, 0x0f);
         buffer[bufferSize] = character;
+
+        if (character == '\b' && buffer[bufferSize - 1] == '\t') {
+            for (int i = 0; i < 3; i++) printc(character, 0x0f);
+        }
+
         if (character == '\b') bufferSize--;
         else bufferSize++;
+
         if (bufferSize > 0) canBackspace = true;
         else canBackspace = false;
     }
@@ -73,6 +79,11 @@ char* read(char terminator) {
     echo = false;
     canBackspace = false;
     buffer[bufferSize] = '\0';
+    if (bufferSize >= MAX_BUFFER_SIZE) {
+        printc('\n', 0x0f);
+        buffer[bufferSize] = '\n';
+        buffer[bufferSize + 1] = '\0';
+    }
 
     return &buffer[0];
 }
