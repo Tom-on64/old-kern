@@ -35,3 +35,27 @@ char* toHex(uint8_t num) { // 0b1111 1111
 
     return hexBuffer;
 }
+
+char* strtok(char* str, char delimiter) {
+    static char* next = NULL; 
+
+    if (str != NULL) next = str;
+    if (next == NULL || *next == '\0') return NULL;
+
+    char* token = next;
+    while (*next != '\0' && *next != delimiter) next++;
+    if (*next != '\0') {
+        *next = '\0'; 
+        next++;
+    }
+
+    return token;
+}
+
+int strcmp(char* str1, char* str2) {
+    while (*str1 && *str2 && *str1 == *str2) {
+        str1++;
+        str2++;
+    }
+    return (*str1 - *str2);
+}

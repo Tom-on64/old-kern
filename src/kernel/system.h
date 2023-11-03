@@ -9,6 +9,8 @@ void outb(uint16_t port, uint8_t data);
 char* memoryCopy(char* src, char* dst, uint16_t amount);
 char* memset(char* dst, uint8_t val, uint16_t amount);
 char* toHex(uint8_t num);
+char* strtok(char* str, char delimiter);
+int strcmp(char* str1, char* str2);
 
 struct regs {
     unsigned int gs, fs, es, ds;

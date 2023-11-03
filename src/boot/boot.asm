@@ -18,7 +18,7 @@ _start:
     ; Load kernel to KERNEL_LOC
     mov bx, KERNEL_LOC
     mov ah, 2   ; Read from disk
-    mov al, 20  ; Read 20 sectors (! If code is more than 10kB it won't be fully loaded !)
+    mov al, 40  ; Read 40 sectors (! If code is more than 20kB it won't be fully loaded !)
     mov ch, 0   ; Cylinder number
     mov cl, 2   ; Sector to start at
     mov dh, 0   ; Head number
